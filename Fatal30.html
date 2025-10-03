@@ -1,0 +1,629 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Algoritmo Fatal </title>
+    <!-- Inclui o Tailwind CSS (o framework principal de estilos) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inclui a fonte Inter do Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Inclui o Font Awesome para ícones (ex: ícones sociais, etc.) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- ATENÇÃO: Os estilos CSS personalizados abaixo devem ser inseridos AQUI ou em um arquivo CSS separado e linkado. -->
+    <style>
+        /* Veja o bloco de código CSS separado para este conteúdo */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #3D1E1E; /* Fundo escuro, inspirado nas imagens */
+            color: #F5F5DC; /* Texto claro, inspirado nas imagens */
+            line-height: 1.6;
+        }
+        .text-primary {
+            color: #F5F5DC; /* Cor principal do texto */
+        }
+        .bg-secondary {
+            background-color: #4A2B2B; /* Uma variação do fundo para seções */
+        }
+        .btn-primary {
+            background-color: #D4A76A; /* Botão com tom dourado/laranja */
+            color: #3D1E1E;
+        }
+        .btn-primary:hover {
+            background-color: #C1965A;
+        }
+        .character-card {
+            background-color: #4A2B2B;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .nav-item:hover {
+            transform: translateY(-2px);
+        }
+        .hidden-content {
+            display: none;
+        }
+        .character-detail-section {
+            display: none; /* Esconde todas as seções de detalhes por padrão */
+        }
+
+        /* Estilo para simular um clique em um elemento da lista */
+        .list-item-clickable {
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+        .list-item-clickable:hover {
+            transform: translateX(5px);
+            color: #D4A76A;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header e Navegação -->
+    <header class="bg-secondary shadow-md py-4 sticky top-0 z-50">
+        <nav class="container mx-auto px-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-primary rounded-lg">Algoritmo Fatal</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="#home" class="text-primary hover:text-white transition duration-300 ease-in-out rounded-lg p-2 nav-item">Início</a>
+                <a href="#personagens-grid" class="text-primary hover:text-white transition duration-300 ease-in-out rounded-lg p-2 nav-item">Personagens</a>
+                <a href="#sinopse-section" class="text-primary hover:text-white transition duration-300 ease-in-out rounded-lg p-2 nav-item">Sinopse</a>
+                <a href="#conteudo-do-livro" class="text-primary hover:text-white transition duration-300 ease-in-out rounded-lg p-2 nav-item">O Livro</a>
+                <a href="#o-autor" class="text-primary hover:text-white transition duration-300 ease-in-out rounded-lg p-2 nav-item">O Autor</a>
+               
+                <a href="#midia-e-recursos" class="text-primary hover:text-white transition duration-300 ease-in-out rounded-lg p-2 nav-item">Mídia</a>
+                <a href="#blog-noticias" class="text-primary hover:text-white transition duration-300 ease-in-out rounded-lg p-2 nav-item">Blog</a>
+                <a href="#onde-comprar" class="text-primary hover:text-white transition duration-300 ease-in-out rounded-lg p-2 nav-item">Comprar</a>
+                <a href="#contato" class="text-primary hover:text-white transition duration-300 ease-in-out rounded-lg p-2 nav-item">Contato</a>
+            </div>
+            <!-- Botão do menu mobile -->
+            <button id="mobile-menu-button" class="md:hidden text-primary focus:outline-none rounded-lg p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </nav>
+        <!-- Menu Mobile -->
+        <div id="mobile-menu" class="hidden md:hidden bg-secondary px-4 pt-2 pb-4 space-y-2">
+            <a href="#home" class="block text-primary hover:text-white p-2 rounded-lg">Início</a>
+            <a href="#personagens-grid" class="block text-primary hover:text-white p-2 rounded-lg">Personagens</a>
+            <a href="#sinopse-section" class="block text-primary hover:text-white p-2 rounded-lg">Sinopse</a>
+            <a href="#conteudo-do-livro" class="block text-primary hover:text-white p-2 rounded-lg">O Livro</a>
+            <a href="#o-autor" class="block text-primary hover:text-white p-2 rounded-lg">O Autor</a>
+            <a href="#midia-e-recursos" class="block text-primary hover:text-white p-2 rounded-lg">Mídia</a>
+            <a href="#blog-noticias" class="block text-primary hover:text-white p-2 rounded-lg">Blog</a>
+            <a href="#onde-comprar" class="block text-primary hover:text-white p-2 rounded-lg">Comprar</a>
+            <a href="#contato" class="block text-primary hover:text-white p-2 rounded-lg">Contato</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Seção Hero (Início) -->
+        <section id="home" class="relative h-screen flex items-center justify-center text-center p-4">
+            <div class="absolute inset-0 bg-black opacity-50 rounded-lg"></div>
+            <div class="relative z-10">
+                <h1 class="text-5xl md:text-7xl font-bold mb-4 leading-tight text-primary"> <br> Algoritmo Fatal</h1>
+                <p class="text-xl md:text-2xl mb-8 text-primary">Descubra os segredos e as vidas dos nossos personagens.</p>
+                <a href="#personagens-grid" class="btn-primary px-8 py-3 rounded-full text-lg font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105">Conheça os Personagens</a>
+            </div>
+        </section>
+
+        <!-- Seção de Personagens (Grid para seleção) -->
+        <section id="personagens-grid" class="py-16 px-4 md:px-8">
+            <div class="container mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12 text-primary">Nossos Personagens</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <!-- Julia Martins Card -->
+                    <div class="character-card p-6 flex flex-col items-center text-center cursor-pointer" onclick="showCharacterDetail('julia')">
+                        <img src="https://i.imgur.com/73p8aSi.jpeg" alt="Julia Martins" class="w-40 h-40 object-cover rounded-full mb-4 border-4 border-primary">
+                        <h3 class="text-3xl font-semibold mb-2 text-primary">Julia Martins</h3>
+                        <p class="text-gray-300">Carismática e Estratégica</p>
+                    </div>
+
+                    <!-- Lucas Lima Card -->
+                    <div class="character-card p-6 flex flex-col items-center text-center cursor-pointer" onclick="showCharacterDetail('lucas')">
+                        <img src="https://i.imgur.com/qNpkLs3.jpeg" alt="Lucas Lima" class="w-40 h-40 object-cover rounded-full mb-4 border-4 border-primary">
+                        <h3 class="text-3xl font-semibold mb-2 text-primary">Lucas Lima</h3>
+                        <p class="text-gray-300">Extrovertido e Músico</p>
+                    </div>
+
+                    <!-- Rafael Santos Card -->
+                    <div class="character-card p-6 flex flex-col items-center text-center cursor-pointer" onclick="showCharacterDetail('rafael')">
+                        <img src="https://i.imgur.com/xoLiCrT.jpeg" alt="Rafael Santos" class="w-40 h-40 object-cover rounded-full mb-4 border-4 border-primary">
+                        <h3 class="text-3xl font-semibold mb-2 text-primary">Rafael Santos</h3>
+                        <p class="text-gray-300">Sociável e Leal</p>
+                    </div>
+
+                    <!-- Letícia Yamada Card -->
+                    <div class="character-card p-6 flex flex-col items-center text-center cursor-pointer" onclick="showCharacterDetail('leticia')">
+                        <img src="https://i.imgur.com/iFgmJ6p.jpeg" alt="Letícia Yamada" class="w-40 h-40 object-cover rounded-full mb-4 border-4 border-primary">
+                        <h3 class="text-3xl font-semibold mb-2 text-primary">Letícia Yamada</h3>
+                        <p class="text-gray-300">Observadora e Reservada</p>
+                    </div>
+
+                    <!-- Leonardo Silva Card -->
+                    <div class="character-card p-6 flex flex-col items-center text-center cursor-pointer" onclick="showCharacterDetail('leonardo')">
+                        <img src="https://i.imgur.com/zz0qy9X.jpeg" alt="Leonardo Silva" class="w-40 h-40 object-cover rounded-full mb-4 border-4 border-primary">
+                        <h3 class="text-3xl font-semibold mb-2 text-primary">Leonardo Silva</h3>
+                        <p class="text-gray-300">Introvertido e Sensível</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Seções de Detalhes dos Personagens (Escondidas por padrão) -->
+        <!-- Julia Martins Detail -->
+        <section id="julia-detail" class="character-detail-section py-16 px-4 md:px-8 bg-secondary">
+            <div class="container mx-auto max-w-4xl">
+                <button onclick="hideCharacterDetail('julia')" class="btn-primary px-4 py-2 rounded-full mb-8"><i class="fas fa-arrow-left mr-2"></i> Voltar aos Personagens</button>
+                <div class="md:flex md:space-x-8 items-center">
+                    <img src="http://googleusercontent.com/file_content/0" alt="Julia Martins" class="w-64 h-64 object-cover rounded-full mx-auto md:mx-0 mb-8 md:mb-0 border-4 border-primary shadow-lg">
+                    <div>
+                        <h2 class="text-5xl font-bold mb-4 text-primary">Julia Martins</h2>
+                        <p class="text-xl text-gray-300 mb-4">17 anos, 3º ano EM</p>
+                        <p class="text-lg leading-relaxed text-gray-400 mb-6">
+                            Julia é carismática e uma observadora nata, com uma mente altamente estratégica. Ela é vaidosa, mas não de uma forma superficial, e possui um carisma natural que a ajuda a lidar com todo tipo de pessoa. Embora aparente confiança, costuma esconder suas inseguranças por trás de piadas e sorrisos. Odeia perder o controle e tem um número significativo de seguidores nas redes sociais, o que mostra sua preocupação com a imagem. Filha única de uma mãe solteira extremamente controladora e perfeccionista, Julia foi elogiada desde pequena por "ser bonita e comportada", o que moldou sua obsessão pela imagem. Nunca teve liberdade real, aprendendo a manipular a percepção dos outros. Em seu grupo de amigos, é mais próxima de Lana e Letícia.
+                        </p>
+                        <h3 class="text-2xl font-semibold mb-2 text-primary">Círculo Social</h3>
+                        <ul class="list-disc list-inside text-gray-400 mb-6">
+                            <li>Lana (melhor amiga)</li>
+                            <li>Letícia Yamada (amiga próxima)</li>
+                            <li>Lucas Lima (colega)</li>
+                            <li>Rafael Santos (colega)</li>
+                            <li>Leonardo Silva (colega)</li>
+                        </ul>
+                        <h3 class="text-2xl font-semibold mb-2 text-primary">Playlist da Julia</h3>
+                        <ul class="list-disc list-inside text-gray-400">
+                            <li>"Bad Guy" - Billie Eilish</li>
+                            <li>"Control" - Halsey</li>
+                            <li>"Diva" - Beyoncé</li>
+                            <li>"Confiança" - (Música fictícia para o personagem)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lucas Lima Detail -->
+        <section id="lucas-detail" class="character-detail-section py-16 px-4 md:px-8 bg-secondary">
+            <div class="container mx-auto max-w-4xl">
+                <button onclick="hideCharacterDetail('lucas')" class="btn-primary px-4 py-2 rounded-full mb-8"><i class="fas fa-arrow-left mr-2"></i> Voltar aos Personagens</button>
+                <div class="md:flex md:space-x-8 items-center">
+                    <img src="http://googleusercontent.com/file_content/1" alt="Lucas Lima" class="w-64 h-64 object-cover rounded-full mx-auto md:mx-0 mb-8 md:mb-0 border-4 border-primary shadow-lg">
+                    <div>
+                        <h2 class="text-5xl font-bold mb-4 text-primary">Lucas Lima</h2>
+                        <p class="text-xl text-gray-300 mb-4">18 anos, 3º ano EM</p>
+                        <p class="text-lg leading-relaxed text-gray-400 mb-6">
+                            Lucas é carismático, extrovertido, sociável e consideravelmente popular na escola. Ele é educado com todos, mesmo com quem não faz parte de seu "círculo social". Gosta de agradar, mas não é falso – tem um lado genuinamente gentil. Não gosta de drama, preferindo resolver tudo com leveza. Quando está sozinho, entra em um estado criativo profundo: escreve músicas, joga e cria playlists. É do time de basquete, mas não age como uma "estrelinha". Organiza campeonatos, eventos e tem fácil acesso a todos os grupos da escola. Ama tocar guitarra com Rafael, e os dois têm uma conexão forte pela música, chegando a compor juntos. Mora com os pais e é filho único, com uma relação tranquila com a família que o incentiva a ser "o melhor em tudo" sem parecer forçado.
+                        </p>
+                        <h3 class="text-2xl font-semibold mb-2 text-primary">Círculo Social</h3>
+                        <ul class="list-disc list-inside text-gray-400 mb-6">
+                            <li>Rafael Santos (melhor amigo, parceiro musical)</li>
+                            <li>Julia Martins (colega)</li>
+                            <li>Letícia Yamada (colega)</li>
+                            <li>Leonardo Silva (colega)</li>
+                        </ul>
+                        <h3 class="text-2xl font-semibold mb-2 text-primary">Playlist do Lucas</h3>
+                        <ul class="list-disc list-inside text-gray-400">
+                            <li>"Sweet Child O' Mine" - Guns N' Roses</li>
+                            <li>"Free Bird" - Lynyrd Skynyrd</li>
+                            <li>"Plug In Baby" - Muse</li>
+                            <li>"Acordes da Vida" - (Música fictícia para o personagem)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rafael Santos Detail -->
+        <section id="rafael-detail" class="character-detail-section py-16 px-4 md:px-8 bg-secondary">
+            <div class="container mx-auto max-w-4xl">
+                <button onclick="hideCharacterDetail('rafael')" class="btn-primary px-4 py-2 rounded-full mb-8"><i class="fas fa-arrow-left mr-2"></i> Voltar aos Personagens</button>
+                <div class="md:flex md:space-x-8 items-center">
+                    <img src="http://googleusercontent.com/file_content/3" alt="Rafael Santos" class="w-64 h-64 object-cover rounded-full mx-auto md:mx-0 mb-8 md:mb-0 border-4 border-primary shadow-lg">
+                    <div>
+                        <h2 class="text-5xl font-bold mb-4 text-primary">Rafael Santos</h2>
+                        <p class="text-xl text-gray-300 mb-4">18 anos, 3º ano EM</p>
+                        <p class="text-lg leading-relaxed text-gray-400 mb-6">
+                            Sociável e carismático com os amigos, Rafael tem um senso de humor afiado, daqueles que transformam desconforto em piada inteligente. É leal, intuitivo, intenso e costuma liderar o grupo sem precisar mandar. É o tipo de pessoa que todos gostam. Escuta de tudo, desde rock até música brasileira densa. Gosta de escrever versos e rimas no bloco de notas do celular. É ativo com o grupo, mas discreto nas redes, postando pouco (letras, frases, trechos de música). Tem uma conta privada onde compartilha ideias e arte com poucos amigos. Mora com a mãe e dois irmãos mais novos. O pai faleceu quando ele era criança. A mãe é firme, mas afetuosa. Rafael sente que precisa ser o "forte da casa". Ele e Lucas compartilham o mesmo gosto pela música e estão quase sempre juntos tocando guitarra.
+                        </p>
+                        <h3 class="text-2xl font-semibold mb-2 text-primary">Círculo Social</h3>
+                        <ul class="list-disc list-inside text-gray-400 mb-6">
+                            <li>Lucas Lima (melhor amigo, parceiro musical)</li>
+                            <li>Julia Martins (amiga)</li>
+                            <li>Letícia Yamada (amiga)</li>
+                            <li>Leonardo Silva (amigo)</li>
+                        </ul>
+                        <h3 class="text-2xl font-semibold mb-2 text-primary">Playlist do Rafael</h3>
+                        <ul class="list-disc list-inside text-gray-400">
+                            <li>"Pais e Filhos" - Legião Urbana</li>
+                            <li>"Proibida Pra Mim" - Charlie Brown Jr.</li>
+                            <li>"Wonderwall" - Oasis</li>
+                            <li>"Guitarra da Alma" - (Música fictícia para o personagem)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Letícia Yamada Detail -->
+        <section id="leticia-detail" class="character-detail-section py-16 px-4 md:px-8 bg-secondary">
+            <div class="container mx-auto max-w-4xl">
+                <button onclick="hideCharacterDetail('leticia')" class="btn-primary px-4 py-2 rounded-full mb-8"><i class="fas fa-arrow-left mr-2"></i> Voltar aos Personagens</button>
+                <div class="md:flex md:space-x-8 items-center">
+                    <img src="http://googleusercontent.com/file_content/4" alt="Letícia Yamada" class="w-64 h-64 object-cover rounded-full mx-auto md:mx-0 mb-8 md:mb-0 border-4 border-primary shadow-lg">
+                    <div>
+                        <h2 class="text-5xl font-bold mb-4 text-primary">Letícia Yamada</h2>
+                        <p class="text-xl text-gray-300 mb-4">17 anos, 3º ano EM</p>
+                        <p class="text-lg leading-relaxed text-gray-400 mb-6">
+                            Extremamente observadora, Letícia costuma ser reservada e introvertida com quem não possui intimidade, mas com seus amigos parece outra pessoa. Muito boa em guardar segredos, inclusive os próprios. Tem um senso de humor questionável e não gosta de exposição, evitando aparecer em fotos e redes sociais. É inteligente em silêncio: nunca diz tudo o que sabe. Tende a se isolar quando está sobrecarregada ou desconfiada. Descendente de japoneses, vive com seu pai e o irmão mais novo em um apartamento discreto e organizado. Odeia o modo como as pessoas se expõem, acreditando que "ninguém deveria saber tanto da vida do outro". Criada num ambiente de cobrança e disciplina. Seu pai é rígido, mas amoroso, exigindo excelência, especialmente em notas e postura. Letícia e Lana são amigas de infância.
+                        </p>
+                        <h3 class="text-2xl font-semibold mb-2 text-primary">Círculo Social</h3>
+                        <ul class="list-disc list-inside text-gray-400 mb-6">
+                            <li>Lana (amiga de infância)</li>
+                            <li>Julia Martins (amiga próxima)</li>
+                            <li>Lucas Lima (colega)</li>
+                            <li>Rafael Santos (colega)</li>
+                            <li>Leonardo Silva (colega)</li>
+                        </ul>
+                        <h3 class="text-2xl font-semibold mb-2 text-primary">Playlist da Letícia</h3>
+                        <ul class="list-disc list-inside text-gray-400">
+                            <li>"Hide and Seek" - Imogen Heap</li>
+                            <li>"Breathe Me" - Sia</li>
+                            <li>"Silent Night" - (versão instrumental)</li>
+                            <li>"Segredos Guardados" - (Música fictícia para o personagem)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leonardo Silva Detail -->
+        <section id="leonardo-detail" class="character-detail-section py-16 px-4 md:px-8 bg-secondary">
+            <div class="container mx-auto max-w-4xl">
+                <button onclick="hideCharacterDetail('leonardo')" class="btn-primary px-4 py-2 rounded-full mb-8"><i class="fas fa-arrow-left mr-2"></i> Voltar aos Personagens</button>
+                <div class="md:flex md:space-x-8 items-center">
+                    <img src="http://googleusercontent.com/file_content/5" alt="Leonardo Silva" class="w-64 h-64 object-cover rounded-full mx-auto md:mx-0 mb-8 md:mb-0 border-4 border-primary shadow-lg">
+                    <div>
+                        <h2 class="text-5xl font-bold mb-4 text-primary">Leonardo Silva</h2>
+                        <p class="text-xl text-gray-300 mb-4">17 anos, 3º ano EM</p>
+                        <p class="text-lg leading-relaxed text-gray-400 mb-6">
+                            Introvertido, observador e sensível, Leonardo é calado em grupo, mas com os amigos mais próximos se abre com piadas secas e comentários afiados. Gosta da companhia dos outros, mas só em doses pequenas, valorizando seu tempo sozinho. Evita conflitos, mas guarda tudo que sente até demais. Sempre parece pensar além do que diz. Quase invisível nas redes sociais, com perfil zero fotos, nomes aleatórios e sem seguidores. Mantinha um blog anônimo com reflexões pessoais, confissões sobre traumas, textos poéticos e relatos íntimos sobre abusos que sofreu na infância. O blog era protegido por criptografia simples e pseudônimos, mas foi descoberto, invadido e exposto sem aviso. Mora com o pai e a madrasta. A mãe foi embora quando ele tinha 8 anos, e a ausência dela ainda pesa muito em sua personalidade.
+                        </p>
+                        <h3 class="text-2xl font-semibold mb-2 text-primary">Círculo Social</h3>
+                        <ul class="list-disc list-inside text-gray-400 mb-6">
+                            <li>Julia Martins (colega)</li>
+                            <li>Lucas Lima (colega)</li>
+                            <li>Rafael Santos (amigo)</li>
+                            <li>Letícia Yamada (colega)</li>
+                        </ul>
+                        <h3 class="text-2xl font-semibold mb-2 text-primary">Playlist do Leonardo</h3>
+                        <ul class="list-disc list-inside text-gray-400">
+                            <li>"Creep" - Radiohead</li>
+                            <li>"Fix You" - Coldplay</li>
+                            <li>"Mad World" - Gary Jules (versão Tears for Fears)</li>
+                            <li>"Ecos do Silêncio" - (Música fictícia para o personagem)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Sinopse -->
+        <section id="sinopse-section" class="py-16 px-4 md:px-8">
+            <div class="container mx-auto max-w-3xl text-center">
+                <h2 class="text-4xl font-bold mb-8 text-primary">Sinopse do Livro</h2>
+                <p id="short-sinopse" class="text-lg leading-relaxed text-gray-300 mb-6">
+                    Em um mundo onde as aparências podem enganar e os segredos moldam destinos, "Algoritmo Fatal" nos leva a uma jornada emocionante através das vidas interligadas de Julia, Lucas, Rafael, Letícia e Leonardo. Enquanto navegam pelos desafios da adolescência e as complexidades de suas próprias identidades, cada personagem enfrenta suas batalhas internas e externas.
+                    <span id="long-sinopse" class="hidden-content">
+                    Julia, com seu carisma estrategicamente construído, busca controlar a percepção dos outros; Lucas, um músico extrovertido, encontra refúgio nas suas composições; Rafael, um líder natural, tenta equilibrar suas responsabilidades familiares com a paixão pela arte; Letícia, a observadora silenciosa, esconde segredos que podem mudar tudo; e Leonardo, cuja vida anônima nas redes sociais é abruptamente exposta, lida com as cicatrizes de um passado doloroso. Juntos, eles descobrem que a verdade pode ser mais libertadora – e perigosa – do que jamais imaginaram. Prepare-se para um enredo repleto de amizade, romance, drama, traição e a busca incessante pela autenticidade em um mundo que nem sempre é o que parece.
+                    </span>
+                </p>
+                <button id="toggle-sinopse-btn" class="btn-primary px-6 py-2 rounded-full text-md font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105">Leia Mais</button>
+            </div>
+        </section>
+
+        <!-- Seção Conteúdo do Livro (Trechos e Citações) -->
+        <section id="conteudo-do-livro" class="bg-secondary py-16 px-4 md:px-8">
+            <div class="container mx-auto max-w-4xl">
+                <h2 class="text-4xl font-bold text-center mb-12 text-primary">O Livro: Trechos e Citações</h2>
+
+                <!-- Trechos do Livro -->
+                <div class="mb-12">
+                    <h3 class="text-3xl font-semibold mb-6 text-primary text-center">Trechos Selecionados</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-secondary p-6 rounded-lg shadow-md border border-gray-600">
+                            <h4 class="text-2xl font-bold mb-3 text-primary">Capítulo 1: O Primeiro Encontro</h4>
+                            <p class="text-gray-400 leading-relaxed italic mb-4">
+                                "O ar pesado daquela tarde de verão prometia mais do que apenas chuva. Julia, com o olhar perdido na tela do celular, mal notou a figura que se aproximava, uma sombra alta que parecia carregar o peso do mundo nos ombros. Seria apenas mais um dia normal em 'Novo Amanhecer', ou o início de algo irreversível?"
+                            </p>
+                            <p class="text-sm text-gray-500">
+                                – Trecho de "Algoritmo Fatal"
+                            </p>
+                        </div>
+                        <div class="bg-secondary p-6 rounded-lg shadow-md border border-gray-600">
+                            <h4 class="text-2xl font-bold mb-3 text-primary">O Desafio de Lucas</h4>
+                            <p class="text-gray-400 leading-relaxed italic mb-4">
+                                "Os dedos de Lucas deslizavam pelas cordas da guitarra, criando uma melodia que era ao mesmo tempo melancólica e esperançosa. Aquele riff, nascido de uma noite insone, era mais do que música; era um grito, uma promessa. Ele sabia que o festival seria sua chance, mas o medo de falhar era uma nota dissonante em sua sinfonia particular."
+                            </p>
+                            <p class="text-sm text-gray-500">
+                                – Trecho de "Algoritmo Fatal"
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-8">
+                        <button class="btn-primary px-6 py-2 rounded-full text-md font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105">Ver Mais Trechos (Em Breve)</button>
+                    </div>
+                </div>
+
+                <!-- Citações Favoritas -->
+                <div>
+                    <h3 class="text-3xl font-semibold mb-6 text-primary text-center">Citações Favoritas</h3>
+                    <div class="space-y-6">
+                        <blockquote class="bg-secondary p-6 rounded-lg shadow-md border-l-4 border-primary italic text-gray-300">
+                            "Às vezes, as máscaras que usamos para proteger os outros acabam nos sufocando."
+                            <footer class="text-right mt-2 text-sm text-gray-500">– Julia Martins</footer>
+                        </blockquote>
+                        <blockquote class="bg-secondary p-6 rounded-lg shadow-md border-l-4 border-primary italic text-gray-300">
+                            "A verdadeira liberdade está em encontrar a própria melodia, mesmo no caos."
+                            <footer class="text-right mt-2 text-sm text-gray-500">– Lucas Lima</footer>
+                        </blockquote>
+                        <blockquote class="bg-secondary p-6 rounded-lg shadow-md border-l-4 border-primary italic text-gray-300">
+                            "Nem tudo que se perde é ausência. Às vezes, é espaço para o que realmente importa."
+                            <footer class="text-right mt-2 text-sm text-gray-500">– Rafael Santos</footer>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção O Autor -->
+        <section id="o-autor" class="py-16 px-4 md:px-8">
+            <div class="container mx-auto max-w-3xl text-center">
+                <h2 class="text-4xl font-bold mb-8 text-primary">Sobre o Autor(a)</h2>
+                <img src="https://placehold.co/150x150/4A2B2B/F5F5DC?text=Autor" alt="Foto do Autor" class="w-40 h-40 object-cover rounded-full mx-auto mb-6 border-4 border-primary shadow-lg">
+                <p class="text-lg leading-relaxed text-gray-300 mb-4">
+                    Somos uma equipe de oito estudantes do Senac SP que uniu forças para criar “Algoritmo Fatal”.
+Com a escrita de [Laura Raduka,Mariana de Lima] e o apoio do time de marketing, transformamos ideias em uma narrativa sobre segredos, identidade e coragem.
+
+Este livro é fruto de colaboração, criatividade e paixão por contar histórias que dialogam com os desafios da adolescência.
+
+                </p>
+                <p class="text-lg leading-relaxed text-gray-300 mb-6">
+                    Meus personagens são como filhos para mim, cada um com suas peculiaridades, falhas e virtudes. Espero que a história de Julia, Lucas, Rafael, Letícia e Leonardo ressoe com você e o(a) convide a refletir sobre as máscaras que usamos e a coragem necessária para revelarmos quem realmente somos.
+                </p>
+                <div class="flex justify-center space-x-6 mt-8">
+                    <a href="https://twitter.com/seuperfil" target="_blank" class="text-primary hover:text-white text-3xl transition duration-300 ease-in-out"><i class="fab fa-twitter"></i></a>
+                    <a href="https://instagram.com/seuperfil" target="_blank" class="text-primary hover:text-white text-3xl transition duration-300 ease-in-out"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com/seuperfil" target="_blank" class="text-primary hover:text-white text-3xl transition duration-300 ease-in-out"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção O Mundo do Livro (Worldbuilding) -->
+        <section id="mundo-do-livro" class="bg-secondary py-16 px-4 md:px-8">
+            <div class="container mx-auto max-w-4xl">
+                <h2 class="text-4xl font-bold text-center mb-12 text-primary">Algoritmo Fatal"</h2>
+
+                <!-- Glossário de Termos -->
+                <div>
+                    <h3 class="text-3xl font-semibold mb-6 text-primary text-center">Glossário de Termos</h3>
+                    <div class="bg-darker-secondary p-6 rounded-lg shadow-md border border-gray-600">
+                        <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-gray-300">
+                            <div>
+                                <dt class="font-bold text-primary mb-1 list-item-clickable">Novo Amanhecer:</dt>
+                                <dd class="ml-4">A cidade fictícia onde a história se passa, conhecida por suas aparências enganosas.</dd>
+                            </div>
+                            <div>
+                                <dt class="font-bold text-primary mb-1 list-item-clickable">Os Observadores:</dt>
+                                <dd class="ml-4">Um grupo secreto de influenciadores digitais que controlam a narrativa social na escola dos personagens.</dd>
+                            </div>
+                            <div>
+                                <dt class="font-bold text-primary mb-1 list-item-clickable">Eco do Silêncio:</dt>
+                                <dd class="ml-4">O nome do blog anônimo de Leonardo, onde ele compartilhava seus pensamentos mais profundos.</dd>
+                            </div>
+                            <div>
+                                <dt class="font-bold text-primary mb-1 list-item-clickable">A Melodia Quebrada:</dt>
+                                <dd class="ml-4">Uma composição de Lucas e Rafael que se torna um símbolo de sua amizade e desafios.</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Mídia e Recursos -->
+        <section id="midia-e-recursos" class="py-16 px-4 md:px-8">
+            <div class="container mx-auto max-w-4xl">
+                <h2 class="text-4xl font-bold text-center mb-12 text-primary">Mídia e Recursos</h2>
+
+                <!-- Trailer do Livro (Placeholder) -->
+                <div class="mb-12">
+                    <h3 class="text-3xl font-semibold mb-6 text-primary text-center">Trailer Oficial</h3>
+                    <div class="aspect-video bg-secondary rounded-lg overflow-hidden shadow-lg border border-gray-600">
+                        <!-- Substitua o src pelo link do seu trailer no YouTube -->
+                        <iframe src="https://youtube.com/shorts/vT_xDvyovoo?si=cDIcQ2tKG-6kuLCR" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-full"></iframe>
+                    </div>
+                    <p class="text-gray-400 text-center mt-4">
+                        Assista ao trailer e mergulhe no universo de "Algoritmo Fatal"! (Link de exemplo).
+                    </p>
+                </div>
+
+                <!-- Trilha Sonora do Livro (Placeholder) -->
+                <div class="mb-12">
+                    <h3 class="text-3xl font-semibold mb-6 text-primary text-center">Trilha Sonora Oficial</h3>
+                    <div class="bg-secondary p-6 rounded-lg shadow-md border border-gray-600">
+                        <!-- Substitua o src pelo link da sua playlist no Spotify ou liste as músicas -->
+                        <iframe style="border-radius:12px" src="https://open.spotify.com/playlist/2lsg8ZxUeuqtEnGUkKdvXS?si=T-x3VGXLSvilhbK0vs7uUQ" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                        <p class="text-gray-400 text-center mt-4">
+                            Ouça as músicas que inspiraram a história e os personagens.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Fan Art / Fan Fiction (Placeholder) -->
+                <div>
+                    <h3 class="text-3xl font-semibold mb-6 text-primary text-center">Galeria de Fãs</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-secondary p-4 rounded-lg shadow-md border border-gray-600 text-center">
+                            <img src="https://placehold.co/300x200/4A2B2B/F5F5DC?text=Fan+Art+1" alt="Fan Art 1" class="w-full h-40 object-cover rounded-lg mb-3">
+                            <p class="text-gray-300">Arte inspirada em Julia por @ArtistaFã</p>
+                        </div>
+                        <div class="bg-secondary p-4 rounded-lg shadow-md border border-gray-600 text-center">
+                            <img src="https://placehold.co/300x200/4A2B2B/F5F5DC?text=Fan+Art+2" alt="Fan Art 2" class="w-full h-40 object-cover rounded-lg mb-3">
+                            <p class="text-gray-300">Ilustração de Lucas e Rafael por @FãCriativo</p>
+                        </div>
+                        <div class="bg-secondary p-4 rounded-lg shadow-md border border-gray-600 text-center">
+                            <img src="https://placehold.co/300x200/4A2B2B/F5F5DC?text=Fan+Art+3" alt="Fan Art 3" class="w-full h-40 object-cover rounded-lg mb-3">
+                            <p class="text-gray-300">Cena emocionante por @LeitorArtista</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-center mt-6">
+                        Envie sua própria fan art ou fan fiction para aparecer aqui! (Funcionalidade para o futuro, exigiria um sistema de envio).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Blog / Notícias (Simulada) -->
+        <section id="blog-noticias" class="bg-secondary py-16 px-4 md:px-8">
+            <div class="container mx-auto max-w-4xl">
+                <h2 class="text-4xl font-bold text-center mb-12 text-primary">Blog e Notícias</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Post 1 -->
+                    <article class="bg-secondary p-6 rounded-lg shadow-md border border-gray-600">
+                        <img src="https://placehold.co/400x250/3D1E1E/F5F5DC?text=Bastidores" alt="Imagem do Blog Post 1" class="w-full h-auto object-cover rounded-lg mb-4">
+                        <h3 class="text-2xl font-bold mb-3 text-primary">Bastidores: Como Criei os Personagens</h3>
+                        <p class="text-gray-400 mb-4">
+                            Descubra o processo criativo por trás de Julia, Lucas, Rafael, Letícia e Leonardo. Suas inspirações, desafios e as pequenas nuances que os tornam tão reais.
+                        </p>
+                        <a href="#" class="text-primary hover:underline font-semibold">Leia Mais <i class="fas fa-arrow-right ml-2"></i></a>
+                    </article>
+
+                    <!-- Post 2 -->
+                    <article class="bg-secondary p-6 rounded-lg shadow-md border border-gray-600">
+                        <img src="https://placehold.co/400x250/3D1E1E/F5F5DC?text=Lançamento" alt="Imagem do Blog Post 2" class="w-full h-auto object-cover rounded-lg mb-4">
+                        <h3 class="text-2xl font-bold mb-3 text-primary">Evento de Lançamento: Marque na Agenda!</h3>
+                        <p class="text-gray-400 mb-4">
+                            Detalhes sobre o aguardado evento de lançamento de "Algoritmo Fatal". Data, local e como participar! Não perca a chance de conhecer o autor(a).
+                        </p>
+                        <a href="#" class="text-primary hover:underline font-semibold">Leia Mais <i class="fas fa-arrow-right ml-2"></i></a>
+                    </article>
+
+                    <!-- Post 3 -->
+                    <article class="bg-secondary p-6 rounded-lg shadow-md border border-gray-600">
+                        <img src="https://placehold.co/400x250/3D1E1E/F5F5DC?text=Fan+Theories" alt="Imagem do Blog Post 3" class="w-full h-auto object-cover rounded-lg mb-4">
+                        <h3 class="text-2xl font-bold mb-3 text-primary">Teorias de Fãs: O Que Esperar?</h3>
+                        <p class="text-gray-400 mb-4">
+                            Analisamos as teorias mais intrigantes que os leitores já criaram sobre o futuro dos personagens e os segredos do universo do livro.
+                        </p>
+                        <a href="#" class="text-primary hover:underline font-semibold">Leia Mais <i class="fas fa-arrow-right ml-2"></i></a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Onde Comprar -->
+        <section id="onde-comprar" class="py-16 px-4 md:px-8">
+            <div class="container mx-auto max-w-xl text-center">
+                <h2 class="text-4xl font-bold mb-8 text-primary">Adquira "Título do Livro"</h2>
+                <p class="text-lg leading-relaxed text-gray-300 mb-8">
+                    Se você já se apaixonou pelos personagens e pela sinopse, chegou a hora de mergulhar de vez nesta história!
+                </p>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="https://www.amazon.com.br/dp/B0CXXXXXXX" target="_blank" class="btn-primary px-8 py-3 rounded-full text-lg font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center">
+                        <i class="fab fa-amazon mr-3"></i> Amazon
+                    </a>
+                    <a href="https://www.saraiva.com.br/livro-titulo" target="_blank" class="btn-primary px-8 py-3 rounded-full text-lg font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center">
+                        <i class="fas fa-book mr-3"></i> Saraiva
+                    </a>
+                    <a href="https://www.livrariacultura.com.br/livro-titulo" target="_blank" class="btn-primary px-8 py-3 rounded-full text-lg font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center">
+                        <i class="fas fa-store mr-3"></i> Livraria Cultura
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Contato e Newsletter -->
+        <section id="contato" class="bg-secondary py-16 px-4 md:px-8">
+            <div class="container mx-auto max-w-xl text-center">
+                <h2 class="text-4xl font-bold mb-8 text-primary">Entre em Contato / Newsletter</h2>
+                <p class="text-lg leading-relaxed text-gray-300 mb-8">
+                    Tem perguntas, feedback ou quer receber as últimas novidades sobre "Título do Livro"? Preencha o formulário abaixo!
+                </p>
+                <form class="space-y-6">
+                    <div>
+                        <input type="text" placeholder="Seu Nome" class="w-full p-3 rounded-lg bg-secondary border border-gray-600 text-primary focus:outline-none focus:ring-2 focus:ring-primary placeholder-gray-400">
+                    </div>
+                    <div>
+                        <input type="email" placeholder="Seu E-mail" class="w-full p-3 rounded-lg bg-secondary border border-gray-600 text-primary focus:outline-none focus:ring-2 focus:ring-primary placeholder-gray-400">
+                    </div>
+                    <div>
+                        <textarea placeholder="Sua Mensagem (opcional)" rows="5" class="w-full p-3 rounded-lg bg-secondary border border-gray-600 text-primary focus:outline-none focus:ring-2 focus:ring-primary placeholder-gray-400"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary px-8 py-3 rounded-full text-lg font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105">Enviar Mensagem / Inscrever-se</button>
+                    <p class="text-sm text-gray-500 mt-4">
+                        (Nota: O envio deste formulário exigiria um backend para processar e armazenar as informações.)
+                    </p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-secondary py-8 text-center text-gray-400">
+        <p>&copy; 2025 "Título do Livro". Todos os direitos reservados.</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+
+    <!-- ATENÇÃO: O código JavaScript abaixo deve ser inserido AQUI, antes da tag </body> de fechamento. -->
+    <script>
+        // Veja o bloco de código JavaScript separado para este conteúdo
+        // Lógica para o menu mobile
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Lógica para mostrar/esconder detalhes dos personagens
+        function showCharacterDetail(characterId) {
+            // Esconde o grid de personagens
+            document.getElementById('personagens-grid').style.display = 'none';
+            // Esconde todas as seções de detalhes de personagens
+            document.querySelectorAll('.character-detail-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            // Mostra a seção de detalhe do personagem específico
+            document.getElementById(`${characterId}-detail`).style.display = 'block';
+            window.scrollTo({ top: document.getElementById(`${characterId}-detail`).offsetTop, behavior: 'smooth' });
+        }
+
+        function hideCharacterDetail(characterId) {
+            // Esconde a seção de detalhe do personagem específico
+            document.getElementById(`${characterId}-detail`).style.display = 'none';
+            // Mostra o grid de personagens
+            document.getElementById('personagens-grid').style.display = 'block';
+            window.scrollTo({ top: document.getElementById('personagens-grid').offsetTop, behavior: 'smooth' });
+        }
+
+        // Lógica para a sinopse expansível
+        document.getElementById('toggle-sinopse-btn').addEventListener('click', function() {
+            const longSinopse = document.getElementById('long-sinopse');
+            const button = this;
+
+            if (longSinopse.classList.contains('hidden-content')) {
+                longSinopse.classList.remove('hidden-content');
+                button.textContent = 'Leia Menos';
+            } else {
+                longSinopse.classList.add('hidden-content');
+                button.textContent = 'Leia Mais';
+            }
+        });
+    </script>
+</body>
+</html>
